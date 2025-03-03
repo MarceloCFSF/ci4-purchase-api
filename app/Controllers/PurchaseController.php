@@ -5,10 +5,12 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Exceptions\ValidationException;
 use App\Services\PurchaseService;
+use App\Transformers\RequestTransformer;
 use App\Transformers\ResponseTransformer;
 
 class PurchaseController extends BaseController
 {
+    use RequestTransformer;
     use ResponseTransformer;
 
     private PurchaseService $purchaseService;
@@ -44,7 +46,7 @@ class PurchaseController extends BaseController
     public function create()
     {
         try {
-            $data = $this->request->getJSON(true);
+            $data = $this->getBodyParams(true);
 
             return $this->response(
                 $this->purchaseService->create($data),
@@ -68,7 +70,7 @@ class PurchaseController extends BaseController
     public function update($id = null)
     {
         try {
-            $data = $this->request->getJSON(true);
+            $data = $this->getBodyParams(true);
 
             return $this->response(
                 $this->purchaseService->update($id, $data),

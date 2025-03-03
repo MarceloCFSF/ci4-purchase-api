@@ -4,11 +4,13 @@ namespace App\Controllers;
 
 use App\Exceptions\ValidationException;
 use App\Services\ProductService;
+use App\Transformers\RequestTransformer;
 use App\Transformers\ResponseTransformer;
 use CodeIgniter\RESTful\ResourceController;
 
 class ProductController extends ResourceController
 {
+    use RequestTransformer;
     use ResponseTransformer;
 
     protected ProductService $productService;
@@ -41,7 +43,7 @@ class ProductController extends ResourceController
     public function create()
     {
         try {
-            $data = $this->request->getJSON(true);
+            $data = $this->getBodyParams(true);
 
             return $this->response(
                 $this->productService->create($data),
@@ -62,7 +64,7 @@ class ProductController extends ResourceController
     public function update($id = null)
     {
         try {
-            $data = $this->request->getJSON(true);
+            $data = $this->getBodyParams(true);
 
             return $this->response(
                 $this->productService->update($id, $data),

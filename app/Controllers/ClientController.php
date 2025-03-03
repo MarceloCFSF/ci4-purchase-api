@@ -4,12 +4,15 @@ namespace App\Controllers;
 
 use App\Exceptions\ValidationException;
 use App\Services\ClientService;
+use App\Transformers\RequestTransformer;
 use App\Transformers\ResponseTransformer;
 use CodeIgniter\RESTful\ResourceController;
 
 class ClientController extends ResourceController
 {
+    use RequestTransformer;
     use ResponseTransformer;
+
     protected ClientService $service;
 
     public function __construct()
@@ -44,7 +47,7 @@ class ClientController extends ResourceController
     public function create()
     {
         try {
-            $data = $this->request->getJSON(true);
+            $data = $this->getBodyParams(true);
             $response = $this->service->create($data);
             return $this->response(
                 $response,
@@ -68,7 +71,7 @@ class ClientController extends ResourceController
     public function update($id = null)
     {
         try {
-            $data = $this->request->getJSON(true);
+            $data = $this->getBodyParams(true);
             $response = $this->service->update($id, $data);
             return $this->response(
                 $response,
