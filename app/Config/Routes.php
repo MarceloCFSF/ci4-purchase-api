@@ -8,3 +8,4 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->get('health', 'HealthCheck::db');
 $routes->resource('clients', ['controller' => 'ClientController']);
+$routes->resource('products', ['controller' => 'ProductController']);
