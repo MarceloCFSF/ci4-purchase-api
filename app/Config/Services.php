@@ -4,8 +4,10 @@ namespace Config;
 
 use App\Models\Client;
 use App\Models\Product;
+use App\Models\Purchase;
 use App\Services\ClientService;
 use App\Services\ProductService;
+use App\Services\PurchaseService;
 use CodeIgniter\Config\BaseService;
 
 class Services extends BaseService
@@ -26,5 +28,14 @@ class Services extends BaseService
         }
 
         return new ProductService(new Product());
+    }
+
+    public static function purchaseService($getShared = true)
+    {
+        if ($getShared) {
+            return self::getSharedInstance('purchaseService');
+        }
+
+        return new PurchaseService(new Purchase());
     }
 }

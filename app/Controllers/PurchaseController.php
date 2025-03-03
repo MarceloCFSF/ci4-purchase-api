@@ -2,39 +2,42 @@
 
 namespace App\Controllers;
 
+use App\Controllers\BaseController;
 use App\Exceptions\ValidationException;
-use App\Services\ProductService;
+use App\Services\PurchaseService;
 use App\Transformers\ResponseTransformer;
-use CodeIgniter\RESTful\ResourceController;
 
-class ProductController extends ResourceController
+class PurchaseController extends BaseController
 {
     use ResponseTransformer;
 
-    protected ProductService $productService;
+    private PurchaseService $purchaseService;
 
     public function __construct()
     {
-        return $this->productService = service('ProductService');
+        $this->purchaseService = service('purchaseService');
     }
 
     public function index()
     {
-        return $this->collection(
-            $this->productService->getAll(),
+        return $this->response(
+            $this->purchaseService->getAll(),
             'Dados retornados com sucesso'
         );
     }
 
-    public function show($id = null)
+    public function show($id)
     {
         try {
             return $this->response(
-                $this->productService->getById($id),
-                "Produto retornado com sucesso"
+                $this->purchaseService->getById($id),
+                'Compra retornada com sucesso'
             );
         } catch (\RuntimeException $e) {
-            return $this->error($e->getMessage(), $e->getCode());
+            return $this->error(
+                $e->getMessage(),
+                $e->getCode()
+            );
         }
     }
 
@@ -44,18 +47,21 @@ class ProductController extends ResourceController
             $data = $this->request->getJSON(true);
 
             return $this->response(
-                $this->productService->create($data),
-                'Produto criado com sucesso',
+                $this->purchaseService->create($data),
+                'Compra criada com sucesso',
                 201
             );
         } catch (ValidationException $e) {
             return $this->error(
-                $e->getMessage(), 
+                $e->getMessage(),
                 $e->getCode(),
                 $e->getErrors()
             );
         } catch (\RuntimeException $e) {
-            return $this->error($e->getMessage(), $e->getCode());
+            return $this->error(
+                $e->getMessage(),
+                $e->getCode()
+            );
         }
     }
 
@@ -65,8 +71,8 @@ class ProductController extends ResourceController
             $data = $this->request->getJSON(true);
 
             return $this->response(
-                $this->productService->update($id, $data),
-                'Produto atualizado com sucesso'
+                $this->purchaseService->update($id, $data),
+                'Compra atualizada com sucesso'
             );
         } catch (ValidationException $e) {
             return $this->error(
@@ -75,21 +81,27 @@ class ProductController extends ResourceController
                 $e->getErrors()
             );
         } catch (\RuntimeException $e) {
-            return $this->error($e->getMessage(), $e->getCode());
+            return $this->error(
+                $e->getMessage(),
+                $e->getCode()
+            );
         }
     }
 
     public function delete($id = null)
     {
         try {
-            $this->productService->delete($id);
+            $this->purchaseService->delete($id);
 
             return $this->response(
                 [],
-                'Produto deletado com sucesso'
+                'Compra deletada com sucesso'
             );
         } catch (\RuntimeException $e) {
-            return $this->error($e->getMessage(), $e->getCode());
+            return $this->error(
+                $e->getMessage(),
+                $e->getCode()
+            );
         }
     }
 }
