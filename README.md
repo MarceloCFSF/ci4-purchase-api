@@ -1,68 +1,75 @@
-# CodeIgniter 4 Application Starter
+# 🛒 Purchase API com CodeIgniter 4
 
-## What is CodeIgniter?
+Este é um projeto de uma API simples e poderosa construída com **CodeIgniter 4** para gerenciar clientes, produtos e pedidos de compra. 🚀
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## 📌 Funcionalidades
+- 📁 **CRUD** para **Clientes** (CPF e/ou CNPJ, Nome e/ou Razão Social)
+- 📦 **CRUD** para **Produtos**
+- 🛍️ **CRUD** para **Pedidos de Compra**, com status: **Em Aberto, Pago ou Cancelado**
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## 🏗️ Estrutura do Projeto
+```
+📂 app
+ ┣ 📂 Config         # Arquivos de Configuração
+ ┣ 📂 Controllers    # Controladores da API
+ ┣ 📂 Controllers    # Controladores da API
+ ┣ 📂 Enum           # Enums usadas na aplicação
+ ┣ 📂 Exceptions     # Exceptions customizadas para a aplicação
+ ┣ 📂 Models         # Modelos do Banco de Dados
+ ┣ 📂 Services       # Camada de Lógica de Negócio
+ ┣ 📂 Validation     # Regras de Validação Personalizadas
+ ┗ 📂 Transformers   # Formatação de Respostas da API
+📂 database
+ ┣ 📂 Migrations     # Migrações do Banco de Dados
+ ┗ 📂 Seeds          # Seeders do Banco de Dados
+📂 public          # Arquivos Públicos
+📂 tests           # Testes Automatizados
+```
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## 🛠️ Tecnologias Utilizadas
+- 🏗️ **Framework:** CodeIgniter 4
+- 🐘 **Banco de Dados:** MySQL
+- 🐳 **Containerização:** Docker & Docker Compose
+- 🔄 **ORM & Migrações:** CodeIgniter Model & Migrations
+- 📜 **Validação & Transformers:** Regras de Validação Personalizadas & Formatação de Respostas
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+## 🚀 Como Rodar
+### 🔧 Pré-requisitos
+Certifique-se de ter instalado:
+- 🐳 Docker & Docker Compose (para ambiente conteinerizado)
+- 🐘 PHP 8+
+- 🛠️ Composer
+- 🗄️ MySQL
 
-## Installation & updates
+### 📥 Instalação & Configuração
+#### 1️⃣ Copiar o Arquivo de Ambiente
+Antes de rodar o projeto, copie o arquivo de ambiente de exemplo e ajuste as configurações necessárias:
+```sh
+cp .env.example .env
+```
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+#### 2️⃣ Rodando com **Makefile** 🛠️
+Para um build otimizado em produção, execute:
+```sh
+make prod
+```
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+#### 3️⃣ Rodando com **Docker Compose** 🐳
+Para um ambiente local conteinerizado, use:
+```sh
+docker compose up --build -d
+docker compose exec -it app php spark migrate
+```
 
-## Setup
+#### 4️⃣ Rodando **Localmente** 🖥️
+Se preferir rodar sem Docker:
+```sh
+composer install
+php spark migrate
+php spark serve
+```
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+## 📌 Observações
+- Certifique-se de que o **MySQL** está rodando e configurado corretamente no `.env`.
+- A API segue o padrão **RESTful**, retornando respostas JSON estruturadas.
 
-## Important Change with index.php
-
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
-
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
-
-**Please** read the user guide for a better explanation of how CI4 works!
-
-## Repository Management
-
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
-
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
-
-## Server Requirements
-
-PHP version 8.1 or higher is required, with the following extensions installed:
-
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
