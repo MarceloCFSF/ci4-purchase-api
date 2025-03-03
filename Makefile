@@ -1,8 +1,10 @@
 prod:
 	docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+	$(MAKE) migrate
 
 dev:
 	docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d
+	$(MAKE) migrate
 
 down:
 	docker compose down
