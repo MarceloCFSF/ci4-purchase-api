@@ -37,7 +37,7 @@ class ClientService
 
     if (!$client) {
       throw new RuntimeException(
-        'Client not found',
+        'Cliente não encontrado',
         404
       );
     }
@@ -49,7 +49,7 @@ class ClientService
   {
     if (!$this->model->find($id)) {
       throw new RuntimeException(
-        'Client not found',
+        'Cliente não encontrado',
         404
       );
     }
@@ -67,7 +67,7 @@ class ClientService
   {
     if (!$this->model->find($id)) {
       throw new RuntimeException(
-        'Client not found',
+        'Cliente não encontrado',
         404
       );
     }

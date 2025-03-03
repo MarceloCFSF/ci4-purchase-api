@@ -4,10 +4,12 @@ namespace App\Controllers;
 
 use App\Exceptions\ValidationException;
 use App\Services\ClientService;
+use App\Transformers\ResponseTransformer;
 use CodeIgniter\RESTful\ResourceController;
 
 class ClientController extends ResourceController
 {
+    use ResponseTransformer;
     protected ClientService $service;
 
     public function __construct()
@@ -17,16 +19,22 @@ class ClientController extends ResourceController
 
     public function index()
     {
-        return $this->respond($this->service->getAll());
+        return $this->collection(
+            $this->service->getAll(),
+            "Dados retornados com sucesso"
+        );
     }
 
     public function show($id = null)
     {
         try {
             $response = $this->service->getById($id);
-            return $this->respond($response);
+            return $this->response(
+                $response,
+                "Cliente retornado com sucesso"
+            );
         } catch (\RuntimeException $e) {
-            return $this->fail(
+            return $this->error(
                 $e->getMessage(),
                 $e->getCode()
             );
@@ -38,33 +46,42 @@ class ClientController extends ResourceController
         try {
             $data = $this->request->getJSON(true);
             $response = $this->service->create($data);
-            return $this->respondCreated($response);
+            return $this->response(
+                $response,
+                "Cliente criado com sucesso",
+                201
+            );
         } catch (ValidationException $e) {
-            return $this->fail(
-                $e->getErrors(),
-                $e->getCode()
+            return $this->error(
+                $e->getMessage(),
+                $e->getCode(),
+                $e->getErrors()
             );
         } catch (\RuntimeException $e) {
-            return $this->failServerError(
+            return $this->error(
                 $e->getMessage(),
-                $e->getCode() ?? 500
+                $e->getCode()
             );
         }
     }
-    
+
     public function update($id = null)
     {
         try {
             $data = $this->request->getJSON(true);
             $response = $this->service->update($id, $data);
-            return $this->respondUpdated($response);
+            return $this->response(
+                $response,
+                "Cliente atualizado com sucesso"
+            );
         } catch (ValidationException $e) {
-            return $this->fail(
+            return $this->error(
+                $e->getMessage(),
+                $e->getCode(),
                 $e->getErrors(),
-                $e->getCode()
             );
         } catch (\RuntimeException $e) {
-            return $this->failServerError(
+            return $this->error(
                 $e->getMessage(),
                 $e->getCode() ?? 500
             );
@@ -75,12 +92,15 @@ class ClientController extends ResourceController
     {
         try {
             $this->service->delete($id);
-            return $this->respondDeleted();
+            return $this->response(
+                [],
+                "Cliente deletado com sucesso"
+            );
         } catch (\RuntimeException $e) {
-            return $this->fail(
+            return $this->error(
                 $e->getMessage(),
                 $e->getCode()
             );
-        }   
+        }
     }
 }
